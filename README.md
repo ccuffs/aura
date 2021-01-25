@@ -26,7 +26,16 @@ Aqui você pode colocar uma screenshot do produto resultante desse projeto. Desc
 Geralmente o primeiro passo para começar é instalar dependências para rodar o projeto. Rode:
 
 ```
-apt get install dependencia
+php artisan vendor:publish --tag=livewire:assets
+```
+
+https://github.com/livewire/livewire/issues/1216#issuecomment-674463055:
+
+/vendor/livewire/livewire/src/Controllers/FilePreviewHandler.php
+/vendor/livewire/livewire/src/Controllers/FileUploadHandler.php
+
+```
+curl -H 'Accept: application/json' -H "Authorization: Bearer ${TOKEN}" http://localhost/api/user
 ```
 
 Recomenda-se que cada comando seja colocado em uma linha diferente:
@@ -47,7 +56,7 @@ git clone https://github.com/ccuffs/template template
 
 ## Contribua
 
-Sua ajuda é muito bem-vinda, independente da forma! Confira o arquivo [CONTRIBUTING.md](CONTRIBUTING.md) para conhecer todas as formas de contribuir com o projeto. Por exemplo, [sugerir uma nova funcionalidade](https://github.com/ccuffs/template/issues/new?assignees=&labels=&template=feature_request.md&title=), [reportar um problema/bug](https://github.com/ccuffs/template/issues/new?assignees=&labels=bug&template=bug_report.md&title=), [enviar um pull request](https://github.com/ccuffs/hacktoberfest/blob/master/docs/tutorial-pull-request.md), ou simplemente utilizar o projeto e comentar sua experiência.
+Sua ajuda é muito bem-vinda, independente da forma! Confira o arquivo [CONTRIBUTING.md](CONTRIBUTING.md) para conhecer todas as formas de contribuir com o projeto. Por exemplo, [sugerir uma nova funcionalidade](https://github.com/ccuffs/aura/issues/new?assignees=&labels=&template=feature_request.md&title=), [reportar um problema/bug](https://github.com/ccuffs/aura/issues/new?assignees=&labels=bug&template=bug_report.md&title=), [enviar um pull request](https://github.com/ccuffs/hacktoberfest/blob/master/docs/tutorial-pull-request.md), ou simplemente utilizar o projeto e comentar sua experiência.
 
 Veja o arquivo [ROADMAP.md](ROADMAP.md) para ter uma ideia de como o projeto deve evoluir.
 
