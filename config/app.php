@@ -180,7 +180,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
-
+        App\Aura\Providers\AuraServiceProvider::class,
     ],
 
     /*
@@ -232,7 +232,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'Aura' => App\Aura\Support\Facades\Aura::class,
     ],
 
 ];
