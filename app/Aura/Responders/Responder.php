@@ -9,6 +9,10 @@ use App\Aura\Interactions\Interaction;
  */
 class Responder
 {
+    public function init()
+    {
+    }
+    
     /**
      * 
      *
@@ -29,6 +33,6 @@ class Responder
      */
     public function engage(Interaction $interaction)
     {
-        echo 'Responder acting on: ' . $interaction->text();
+        echo 'Responder acting on: ' . $interaction;
     }
 }

@@ -26,6 +26,6 @@ class Interaction
 
     public function __toString()
     {
-        return '[Interaction]' . $this->text();
+        return '[Interaction text="' . $this->text() . '"]';
     }
 }

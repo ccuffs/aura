@@ -22,17 +22,35 @@ class Aura
         $instances = [];
 
         foreach($entries as $key => $className) {
-             $object = app()->make($className);
-             $instances[$key] = $object;
+            try {
+                $object = app()->make($className);
+                $instances[$key] = $object;
+
+            } catch(\Exception $e) {
+                Log::error('Failed to instantiate responder', [
+                    'responder' => $key,
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]);
+            }
         }
         
-        return $instances;
+        $this->responders = $instances;
+    }
+
+    protected function initResponders() 
+    {
+        foreach($this->responders as $responder) {
+            $responder->init();
+        }
     }
 
     public function __construct($config)
     {
         $this->config = $config;
-        $this->responders = $this->createResponderInstances($this->config['responders']);
+        
+        $this->createResponderInstances($this->config['responders']);
+        $this->initResponders();
     }
 
     protected function createInteraction(string $text)
@@ -50,7 +68,7 @@ class Aura
                 }
                 $statusCode = $responder->engage($interaction);
             } catch(\Exception $e) {
-                Log::error('Responder failed', [
+                Log::error('Responder failed to engage', [
                     'responder' => $responderKey,
                     'error' => $e->getMessage(),
                     'trace' => $e->getTraceAsString()
