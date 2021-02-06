@@ -15,6 +15,6 @@ return [
     'name' => env('APP_NAME', 'Laravel'),
 
     'responders' => [
-        App\Aura\Responders\Responder::class,
+        'default' => App\Aura\Responders\Responder::class,
     ],
 ];

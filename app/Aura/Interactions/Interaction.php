@@ -7,6 +7,13 @@ namespace App\Aura\Interactions;
  */
 class Interaction
 {
+    protected string $text;
+
+    public function __construct($text = '')
+    {
+        $this->text = $text;
+    }
+
     /**
      * Texto puro que descreve essa query.
      *
@@ -14,6 +21,11 @@ class Interaction
      */
     public function text()
     {
-        return 'ddd';
+        return $this->text;
+    }
+
+    public function __toString()
+    {
+        return '[Interaction]' . $this->text();
     }
 }

@@ -25,9 +25,10 @@ class Responder
      * 
      *
      * @param  App\Interactions\Interaction  $interaction
-     * @return bool
+     * @return 
      */
     public function engage(Interaction $interaction)
     {
+        echo 'Responder acting on: ' . $interaction->text();
     }
 }
