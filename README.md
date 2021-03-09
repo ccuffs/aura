@@ -6,52 +6,83 @@
 
 # Título
 
-Coloque uma descrição do projeto aqui. Geralmente essa descrição tem de duas a três linhas de tamanho. Ela deve dar uma visão geral sobre o que é o projeto, ex.: tecnologia usada, filosofia de existência, qual problema tenta-se resolver, etc. Se você precisa escrever mais que 3 linhas de descrição, crie subseções.
+A assiste virtual do curso de Ciência da Computação - UFFS, tem por objetivo facilitar o acesso à informação por parte da comunidade acadêmica. Para isto ela utiliza técnicas de Inteligência Artifial que permitem que as informações corretas sejam fornecidas àqueles que as buscam. 
 
-> **IMPORTANTE:** coloque aqui alguma mensagem que é muito relevante aos usuários do projeto, se for o caso.
+A Aura pode ser muito mais rápida que uma pessoa, trabalha 24h por dia, sete dias por semana para solucionar seus problemas. 
 
-## Features
-
-Aqui você pode colocar uma screenshot do produto resultante desse projeto. Descreva também suas features usando uma lista:
-
-* Fácil integração;
-* Poucas dependências;
-* Utiliza um template lindo para organizar o `README`;
-* Possui ótima documentação e testes.
+> **IMPORTANTE:** A Aura está em fase de desenvolvimento, portanto seus resultados de busca podem não ser satisfatórios - nada substitui um e-mail cuidadosamente escrito por uma pessoa :)
 
 ## Começando
 
-### 1. Primeiro passo para começar
-
-Geralmente o primeiro passo para começar é instalar dependências para rodar o projeto. Rode:
+Para que possa _buildar_ o projeto, é necessário cloná-lo e acessar o diretório:
 
 ```
-php artisan vendor:publish --tag=livewire:assets
+git clone https://github.com/ccuffs/aura.git
+cd aura
 ```
 
-https://github.com/livewire/livewire/issues/1216#issuecomment-674463055:
+### Instalando dependências
+Para executar este projeto, as seguintes dependências devem ser instaladas:
 
-/vendor/livewire/livewire/src/Controllers/FilePreviewHandler.php
-/vendor/livewire/livewire/src/Controllers/FileUploadHandler.php
+- [PHP](https://www.php.net/downloads);
+- [Composer](https://getcomposer.org/download/);
+- [MySQL](https://www.mysql.com/downloads/);
+- [Node e NPM](https://nodejs.org/en/);
 
-```
-curl -H 'Accept: application/json' -H "Authorization: Bearer ${TOKEN}" http://localhost/api/user
-```
-
-Recomenda-se que cada comando seja colocado em uma linha diferente:
-
-```
-apt get install outra-coisa
-```
-
-Dessa forma os usuários podem copiar e colar sem ler as documentação (que é o que geralmente acontece).
-
-### 2. Outro(s) passo(s)
-
-Geralmente os próximos passos ensinam como instalar e configurar o projeto para uso/desenvolvimento. Rode:
+### Configuração do Banco de Dados
+O SGBD utilizado é o MySQL. Acesse-o e crie um banco de dados específico para a aplicação:
 
 ```
-git clone https://github.com/ccuffs/template template
+CREATE DATABASE <nome-do-banco>;
+```
+
+### Configuração do Laravel
+Crie um arquivo chamado `.env` utilizando `.env.example` como template:
+
+```
+cp .env.example .env
+```
+
+> Se você seguir os passos aqui descritos e a aplicação não rodar como esperado, deixe o campo `APP_URL` vazio no `.env`. 
+
+Em seguida, altere o valor do campo `DB_DATABASE` para `<nome-do-banco>` e substitua o valor dos campos `DB_USERNAME` e `DB_PASSWORD` para o usuário e senha do MySQL, utilizados na criação do banco.
+
+Agora, instale as dependências do PHP:
+
+```
+composer install
+```
+
+Após, uma chave da aplicação deve ser gerada:
+```
+php artisan key:generate
+```
+
+Por fim, rode as migrações, para carregar as relações no banco:
+```
+php artisan migrate
+```
+
+### Configuração do Node
+
+Para o front-end, basta instalar as dependências com o `npm`:
+
+```
+npm install
+```
+
+### Rodando o Projeto
+
+Inicie o servidor Laravel
+
+```
+php artisan serve
+```
+
+E compile o front-end:
+
+```
+npm run dev
 ```
 
 ## Contribua
@@ -68,11 +99,3 @@ Esse projeto é licenciado nos termos da licença open-source [Apache 2.0](https
 ## Changelog
 
 Veja todas as alterações desse projeto no arquivo [CHANGELOG.md](CHANGELOG.md).
-
-## Projetos semelhates
-
-Abaixo está uma lista de links interessantes e projetos similares:
-
-* [Outro projeto](https://github.com/projeto)
-* [Projeto inspiração](https://github.com/projeto)
-* [Ferramenta semelhante](https://github.com/projeto)
