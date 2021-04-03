@@ -12,6 +12,7 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        <link rel="stylesheet" href="{{ mix('css/aura/aura.css') }}">
 
         @livewireStyles
         @bukStyles(true)
@@ -40,5 +41,7 @@
 
         @livewireScripts
         @bukScripts(true)
+
+        <script src="{{ mix('js/aura/aura.js') }}"></script>
     </body>
 </html>
