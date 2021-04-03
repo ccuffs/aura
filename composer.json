@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "bassim/super-expressive-php": "^1.0",
         "blade-ui-kit/blade-icons": "^0.5.1",
         "blade-ui-kit/blade-ui-kit": "^0.2.0",
         "ccuffs/auth-iduffs": "^1.1",
