@@ -1,5 +1,6 @@
-var Aura = function(num, another_num) {
-    this.axios = require('axios');
+var ccuffs = {};
+
+ccuffs.Aura = function(num, another_num) {
     this.changeBar(num);
 
     this.baz = function(){
@@ -7,7 +8,7 @@ var Aura = function(num, another_num) {
     }
 }
 
-Aura.prototype.changeBar = function(num) {
+ccuffs.Aura.prototype.changeBar = function(num) {
     this.bar = num;
 }
 
@@ -18,8 +19,6 @@ function my_private_function(){
 }
 
 //All private variables can be normaly used (by functions that can see them).
-Aura.prototype.use_magic = function(){
+ccuffs.Aura.prototype.use_magic = function(){
     my_private_function();
-}
-  
-export default Aura;
+} 

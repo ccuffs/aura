@@ -20,7 +20,7 @@
                     </div>
 
                     <div class="aura-container mt-2">
-                        <form onsubmit="event.preventDefault();" role="search">
+                        <form onsubmit="event.preventDefault();" role="search" id="aura-controls">
                             <label for="search">Search for stuff</label>
                             <input id="search" type="search" placeholder="Ex.: minhas horas de acc" autofocus required />
                             <button type="submit">Enter</button>
@@ -33,8 +33,18 @@
                             </div>
                         </form>
                     </div>
+
+                    <div class="mt-2" id="aura-results">
+                        fdlkflkfj
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="{{ asset('js/aura-sdk/aura.js') }}"></script>
+    <script>
+        var a = new ccuffs.Aura();
+        console.log(a);
+    </script>
 </x-app-layout>

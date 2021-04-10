@@ -41,7 +41,5 @@
 
         @livewireScripts
         @bukScripts(true)
-
-        <script src="{{ mix('js/aura/aura.js') }}"></script>
     </body>
 </html>
