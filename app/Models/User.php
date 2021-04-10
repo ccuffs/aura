@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use betterapp\LaravelDbEncrypter\Traits\EncryptableDbAttribute;
 
 class User extends Authenticatable
 {
@@ -23,10 +24,17 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'uid',
+        'passport',
         'name',
         'email',
         'password'
+    ];
+
+    /**
+     * The attributes that should be encrypted/decrypted to/from db.
+     */
+    protected $encryptable = [
+        'passport',
     ];
 
     /**

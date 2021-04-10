@@ -10,10 +10,13 @@
     "require": {
         "php": "^7.3|^8.0",
         "bassim/super-expressive-php": "^1.0",
+        "betterapp/laravel-db-encrypter": "^1.0",
         "blade-ui-kit/blade-icons": "^0.5.1",
         "blade-ui-kit/blade-ui-kit": "^0.2.0",
         "ccuffs/auth-iduffs": "^1.1",
+        "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.4",
+        "firebase/php-jwt": "^5.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
