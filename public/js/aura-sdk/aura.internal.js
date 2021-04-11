@@ -50,8 +50,13 @@ ccuffs.AuraInternal.prototype.getInputValue = function() {
 
 ccuffs.AuraInternal.prototype.handleInputInteractionKeyDown = function(event) {
     if(event.key == 'Enter') {
-        const value = this.getInputValue();
-        this.request.post(this.API_URL + '/interact', {q: value});
+        var payload = {
+            q: this.getInputValue()
+        };
+
+        this.request.post(this.API_URL + '/interact', payload, function(data) {
+            console.log('Aura response', data);
+        });
     }
 }
 

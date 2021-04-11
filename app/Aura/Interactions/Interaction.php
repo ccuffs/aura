@@ -2,16 +2,25 @@
 
 namespace App\Aura\Interactions;
 
+use App\Aura\Responders\Responder;
+use Illuminate\Support\Str;
+
 /**
  * 
  */
 class Interaction
 {
-    protected string $text;
+    protected string $responseText;
+    protected string $inputText;
+    protected array $responders;
+    protected array $entities;    
 
     public function __construct($text = '')
     {
-        $this->text = $text;
+        $this->inputText = $text;
+        $this->responseText = '';
+        $this->responders = [];
+        $this->entities = [];
     }
 
     /**
@@ -19,13 +28,41 @@ class Interaction
      *
      * @return string
      */
-    public function text()
+    public function inputText()
     {
-        return $this->text;
+        return $this->inputText;
+    }
+
+    /**
+     * Testo puro que descreve essa query.
+     *
+     * @return string
+     */
+    public function addResponse($data, Responder $responder)
+    {
+        $this->responders[] = [
+            'name' => $responder->name(),
+            'instance' => $responder,
+            'data' => $data
+        ];
+    }    
+
+    public function toJson()
+    {
+        return [
+            'input' => [
+                'text' => $this->inputText,
+            ],
+            'response' => [
+                'text' => $this->responseText,
+                'context' => Str::uuid()->toString()
+            ],
+            'responders' => $this->responders
+        ];
     }
 
     public function __toString()
     {
-        return '[Interaction text="' . $this->text() . '"]';
+        return '[Interaction inputText="' . $this->inputText() . '"]';
     }
 }

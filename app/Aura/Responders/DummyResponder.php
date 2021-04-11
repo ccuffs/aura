@@ -7,7 +7,7 @@ use App\Aura\Interactions\Interaction;
 /**
  * 
  */
-class Responder
+class DummyResponder extends Responder
 {
     public function init()
     {
@@ -15,8 +15,8 @@ class Responder
 
     public function name()
     {
-        return 'app.aura.responder';
-    }    
+        return 'dummy.responder';
+    }
     
     /**
      * 
@@ -37,5 +37,6 @@ class Responder
      */
     public function engage(Interaction $interaction)
     {
+        $interaction->addResponse('Responder acting on: ' . $interaction, $this);
     }
 }

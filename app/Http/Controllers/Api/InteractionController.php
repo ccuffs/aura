@@ -17,7 +17,6 @@ class InteractionController extends Controller
     public function index(Request $request)
     {
         $command = $request->input('q', 'Hello, world!');
-
-        return Aura::process($command);
+        return Aura::process($command)->toJson();
     }
 }

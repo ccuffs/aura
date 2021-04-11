@@ -4,17 +4,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Name
+    | Responders
     |--------------------------------------------------------------------------
     |
-    | This value is the name of your application. This value is used when the
-    | framework needs to place the application's name in a notification or
-    | any other location as required by the application or its packages.
+    | Lista de classes que serão utilizadas para processar qualquer
+    | interação com a Aura. Um responder pode ser visto como uma mini
+    | aplicação que atua sobre um texto de entrada (o que o usuário escreveu).
     |
     */
-    'name' => env('APP_NAME', 'Laravel'),
-
     'responders' => [
-        'default' => App\Aura\Responders\Responder::class,
+        'dummy' => App\Aura\Responders\DummyResponder::class,
     ],
 ];

@@ -30,11 +30,29 @@ ccuffs.AuraRequest.prototype.post = function(url, data, callback, headers) {
     this.doRequest('POST', url, data, callback, headers);
 }
 
+ccuffs.AuraRequest.prototype.createPayload = function(data) {
+    if(data == undefined) {
+        return undefined;
+    }
+
+    var payload = new FormData();
+
+    for(var name in data) {
+        payload.set(name, data[name]);
+    }
+
+    return payload;
+}
+
 ccuffs.AuraRequest.prototype.doRequest = function(verb, url, data, callback, headers) {
     const self = this;
     var request = new XMLHttpRequest();
+    var payload = this.createPayload(data);
+
+    console.debug(verb, url, payload);
+
     request.open(verb, url, true);
-console.log(verb, url);
+
     this.addHeaders(request, this.defaultHeaders);
     this.addHeaders(request, headers);
 
@@ -50,5 +68,5 @@ console.log(verb, url);
     };
 
     request.onerror = this.onError;
-    request.send(data);
+    request.send(payload);
 }

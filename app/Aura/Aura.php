@@ -63,11 +63,18 @@ class Aura
     {
         foreach($this->responders as $responderKey => $responder) {
             try {
+                // Testa se o responder da vez quer processar a interação.
+                // Responder pode escolher não processar uma interação se julgarem
+                // que não há nada interessante (por exemplo, não entendeu a pergunta).
                 if(!$responder->shouldEngage($interaction)) {
                     continue;
                 }
-                $statusCode = $responder->engage($interaction);
+
+                // O método engage() é onde o responder fará a interação a fará as alterações
+                // na interação que está sendo criada.
+                $responder->engage($interaction);
             } catch(\Exception $e) {
+                // Tivemos um problema severo com algum responder.
                 Log::error('Responder failed to engage', [
                     'responder' => $responderKey,
                     'error' => $e->getMessage(),
@@ -81,5 +88,7 @@ class Aura
     {
         $interaction = $this->createInteraction($text);
         $this->runResponders($interaction);
+
+        return $interaction;
     }
 }
