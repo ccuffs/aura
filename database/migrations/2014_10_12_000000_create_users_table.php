@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->foreignId('entity_id')->nullable();
             $table->string('name');
-            $table->string('email')->unique();            
+            $table->string('email')->index();
             $table->text('passport')->nullable();
             $table->string('password');
             $table->rememberToken();
