@@ -42,9 +42,12 @@
         </div>
     </div>
 
+    <script src="{{ asset('js/aura-sdk/aura.internal.js') }}"></script>
+    <script src="{{ asset('js/aura-sdk/aura.request.js') }}"></script>
     <script src="{{ asset('js/aura-sdk/aura.js') }}"></script>
     <script>
-        var a = new ccuffs.Aura();
-        console.log(a);
+        var aura = new ccuffs.Aura({
+            'inputId': 'search'
+        });
     </script>
 </x-app-layout>

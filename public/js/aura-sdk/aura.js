@@ -1,24 +1,13 @@
-var ccuffs = {};
+var ccuffs = ccuffs || {};
 
-ccuffs.Aura = function(num, another_num) {
-    this.changeBar(num);
+ccuffs.Aura = function(settings) {
+    this.internal = new ccuffs.AuraInternal(this, settings);
+}
 
-    this.baz = function(){
-        console.log(another_num);
+ccuffs.Aura.prototype.interact = function(text) {
+    if(!text) {
+        throw 'Empty or undefined interaction.';
     }
+
+    console.log('interact', text);
 }
-
-ccuffs.Aura.prototype.changeBar = function(num) {
-    this.bar = num;
-}
-
-var a_secret_variable = 42;
-
-function my_private_function(){
-    console.log(a_secret_variable);
-}
-
-//All private variables can be normaly used (by functions that can see them).
-ccuffs.Aura.prototype.use_magic = function(){
-    my_private_function();
-} 
