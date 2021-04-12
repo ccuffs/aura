@@ -13,14 +13,14 @@ class Interaction
     protected string $responseText;
     protected string $inputText;
     protected array $responders;
-    protected array $entities;    
+    protected array $debug;    
 
     public function __construct($text = '')
     {
         $this->inputText = $text;
         $this->responseText = '';
         $this->responders = [];
-        $this->entities = [];
+        $this->debug = [];
     }
 
     /**
@@ -38,12 +38,13 @@ class Interaction
      *
      * @return string
      */
-    public function addResponse($data, Responder $responder)
+    public function addResponse($data, $score, Responder $responder)
     {
         $this->responders[] = [
             'name' => $responder->name(),
-            'instance' => $responder,
-            'data' => $data
+            'data' => $data,            
+            'score' => $score,
+            'instance' => $responder
         ];
     }    
 
@@ -57,12 +58,27 @@ class Interaction
                 'text' => $this->responseText,
                 'context' => Str::uuid()->toString()
             ],
-            'responders' => $this->responders
+            'responders' => $this->responders,
+            'debug' => $this->debug,
         ];
     }
 
     public function __toString()
     {
         return '[Interaction inputText="' . $this->inputText() . '"]';
+    }
+
+    public function setDebugInfo($key, $data) {
+        if(!$key) {
+            $key = Str::uuid()->toString();
+        }
+
+        $this->debug[$key] = $data;
+    }
+
+    public function sortRespondersByScore() {
+        usort($this->responders, function($responseA, $responseB) {
+            return strcmp($responseA['score'], $responseB['score']);
+        });
     }
 }

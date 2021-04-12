@@ -48,7 +48,7 @@ class Aura
     public function __construct($config)
     {
         $this->config = $config;
-        
+
         $this->createResponderInstances($this->config['responders']);
         $this->initResponders();
     }
@@ -61,20 +61,32 @@ class Aura
 
     protected function runResponders(Interaction $interaction)
     {
+        $debugResponders = [
+            'checked' => count($this->responders),
+            'engaged' => 0,
+            'not_enganged' => 0,
+            'failed' => 0
+        ];
+
+        $startTime = hrtime(true);
+
         foreach($this->responders as $responderKey => $responder) {
             try {
                 // Testa se o responder da vez quer processar a interação.
                 // Responder pode escolher não processar uma interação se julgarem
                 // que não há nada interessante (por exemplo, não entendeu a pergunta).
                 if(!$responder->shouldEngage($interaction)) {
+                    $debugResponders['not_engaged']++;
                     continue;
                 }
 
                 // O método engage() é onde o responder fará a interação a fará as alterações
                 // na interação que está sendo criada.
                 $responder->engage($interaction);
+                $debugResponders['engaged']++;
             } catch(\Exception $e) {
                 // Tivemos um problema severo com algum responder.
+                $debugResponders['failed']++;
                 Log::error('Responder failed to engage', [
                     'responder' => $responderKey,
                     'error' => $e->getMessage(),
@@ -82,12 +94,23 @@ class Aura
                 ]);
             }
         }
+
+        $endTime = hrtime(true);
+        
+        $interaction->setDebugInfo('responders', $debugResponders);
+        $interaction->setDebugInfo('processing_time_ms', $endTime - $startTime);
+    }
+
+    protected function chooseBestResponse(Interaction $interaction) {
+        // Ordena o conjunto de responder do maior para o menor score de resposta.
+        $interaction->sortRespondersByScore();
     }
 
     public function process(string $text)
     {
         $interaction = $this->createInteraction($text);
         $this->runResponders($interaction);
+        $this->chooseBestResponse($interaction);
 
         return $interaction;
     }

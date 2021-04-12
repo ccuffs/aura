@@ -13,6 +13,6 @@ return [
     |
     */
     'responders' => [
-        'dummy' => App\Aura\Responders\DummyResponder::class,
+        'dummy' => App\Aura\Responders\Dummy::class,
     ],
 ];
