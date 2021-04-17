@@ -17,6 +17,8 @@ class InteractionController extends Controller
     public function index(Request $request)
     {
         $command = $request->input('q', 'Hello, world!');
-        return Aura::process($command)->toJson();
+        $passport = $request->header('X-Aura-Passport');
+
+        return Aura::process($command, $passport)->toJson();
     }
 }

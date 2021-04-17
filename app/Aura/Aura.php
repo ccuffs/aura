@@ -3,7 +3,9 @@
 namespace App\Aura;
 
 use App\Aura\Interactions\Interaction;
+use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Log;
+use Exception;
 
 /**
  * 
@@ -97,8 +99,8 @@ class Aura
 
         $endTime = hrtime(true);
         
-        $interaction->setDebugInfo('responders', $debugResponders);
-        $interaction->setDebugInfo('processing_time_ms', $endTime - $startTime);
+        $interaction->addDebugInfo('responders', $debugResponders);
+        $interaction->addDebugInfo('processing_time_ms', $endTime - $startTime);
     }
 
     protected function chooseBestResponse(Interaction $interaction) {
@@ -106,12 +108,77 @@ class Aura
         $interaction->sortRespondersByScore();
     }
 
-    public function process(string $text)
-    {
-        $interaction = $this->createInteraction($text);
-        $this->runResponders($interaction);
-        $this->chooseBestResponse($interaction);
+    /**
+     * 
+     * @License: using code from https://github.com/firebase/php-jwt/blob/master/src/JWT.php
+     */
+    protected function parseJwt($jwt) {
+        $parts = explode('.', $jwt);
 
-        return $interaction;
+        if (count($parts) != 3) {
+            throw new \Exception('Wrong number of segments in JWT');
+        }
+        
+        list($headb64, $bodyb64, $cryptob64) = $parts;
+
+        $header = json_decode(JWT::urlsafeB64Decode($headb64));
+        $payload = json_decode(JWT::urlsafeB64Decode($bodyb64));        
+        $sig = json_decode(JWT::urlsafeB64Decode($cryptob64));        
+
+        if ($header === null) {
+            throw new Exception('Invalid header encoding in JWT');
+        }
+
+        if ($payload === null) {
+            throw new Exception('Invalid claims encoding in JWT');
+        }
+
+        if ($sig === false) {
+            throw new Exception('Invalid signature encoding in JWT');
+        }        
+
+        return [
+            'header' => (array) $header,
+            'payload' => (array) $payload,
+            'sig' => $sig,
+        ];
+    }
+
+    protected function getJwtKeyFromAppId($app_id) {
+        // TODO: implementar a busca da informação
+        return 'example_keyj';
+    }
+
+    /**
+     * 
+     * @License: using code from https://github.com/firebase/php-jwt/blob/master/src/JWT.php
+     */
+    protected function checkPassport(string $jwt) {
+        $infos = $this->parseJwt($jwt);
+        $payload = $infos['payload'];
+
+        if (!isset($payload['app_id'])) {
+            throw new \Exception('Missing app_id in passport payload');
+        }
+
+        $key = $this->getJwtKeyFromAppId($payload['app_id']);
+        $decoded = JWT::decode($jwt, $key, array('HS256'));
+
+        return $decoded;
+    }
+
+    public function process(string $text, string $passport)
+    {
+        try {
+            $credentials = $this->checkPassport($passport);
+            $interaction = $this->createInteraction($text);
+            $this->runResponders($interaction);
+            $this->chooseBestResponse($interaction);
+
+            return $interaction;
+        } catch (Exception $e) {
+            // TODO: criar e retornar interaction com erro
+            throw $e;
+        }
     }
 }

@@ -68,7 +68,7 @@ class Interaction
         return '[Interaction inputText="' . $this->inputText() . '"]';
     }
 
-    public function setDebugInfo($key, $data) {
+    public function addDebugInfo($key, $data) {
         if(!$key) {
             $key = Str::uuid()->toString();
         }

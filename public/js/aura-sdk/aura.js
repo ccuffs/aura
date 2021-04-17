@@ -9,5 +9,5 @@ ccuffs.Aura.prototype.interact = function(text) {
         throw 'Empty or undefined interaction.';
     }
 
-    console.log('interact', text);
+    this.internal.postInteraction(text);
 }

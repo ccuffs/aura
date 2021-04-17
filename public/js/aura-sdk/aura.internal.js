@@ -6,6 +6,7 @@ ccuffs.AuraInternal = function(external, settings) {
     this.defaultSettings = {
         token: '',
         inputId: undefined,
+        passport: '',
     }
 
     this.settings = {};
@@ -50,14 +51,25 @@ ccuffs.AuraInternal.prototype.getInputValue = function() {
 
 ccuffs.AuraInternal.prototype.handleInputInteractionKeyDown = function(event) {
     if(event.key == 'Enter') {
-        var payload = {
-            q: this.getInputValue()
-        };
-
-        this.request.post(this.API_URL + '/interact', payload, function(data) {
-            console.log('Aura response', data);
-        });
+        var text = this.getInputValue();
+        this.postInteraction(text);
     }
+}
+
+ccuffs.AuraInternal.prototype.getDefaultAuthHeaders = function() {
+    return {
+        'X-Aura-Passport': this.settings.passport
+    };
+}
+
+ccuffs.AuraInternal.prototype.postInteraction = function(text) {
+    var payload = {
+        q: text
+    };
+
+    this.request.post(this.API_URL + '/interact', payload, function(data) {
+        console.log('Aura response', data);
+    }, this.getDefaultAuthHeaders());
 }
 
 ccuffs.AuraInternal.prototype.createSettings = function(settings) {

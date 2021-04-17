@@ -47,7 +47,8 @@
     <script src="{{ asset('js/aura-sdk/aura.js') }}"></script>
     <script>
         var aura = new ccuffs.Aura({
-            'inputId': 'search'
+            'inputId': 'search',
+            'passport': '{{ $passport }}'
         });
     </script>
 </x-app-layout>
