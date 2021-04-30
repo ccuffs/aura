@@ -1,6 +1,15 @@
 <?php
 
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | Enpoints de APIs utilizadas
+    |--------------------------------------------------------------------------
+    |
+    | URLs e afins de APIs utilizadas pela Aura.
+    |
+    */
+   'apicc_url' =>  env('APICC_URL', 'Laravel'),
 
     /*
     |--------------------------------------------------------------------------
@@ -14,5 +23,6 @@ return [
     */
     'responders' => [
         'dummy' => App\Aura\Responders\Dummy::class,
+        'uffs.acc' => App\Aura\Responders\UFFS\Acc::class,
     ],
 ];
