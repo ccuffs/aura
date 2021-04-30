@@ -55,9 +55,11 @@ class Aura
         $this->initResponders();
     }
 
-    protected function createInteraction(string $text)
+    protected function createInteraction(string $text, array $credentials)
     {
         $interaction = new Interaction($text);
+        $interaction->setCredentials($credentials);
+
         return $interaction;
     }
 
@@ -167,11 +169,23 @@ class Aura
         return $decoded;
     }
 
+    protected function createCredentials(string $passport) {
+        if(empty($passport)) {
+            // TODO: criar credenciais padrão
+            return [];
+        }
+
+        return [
+            'jwt' => $this->checkPassport($passport)
+        ];
+    }
+
     public function process(string $text, string $passport)
     {
         try {
-            $credentials = $this->checkPassport($passport);
-            $interaction = $this->createInteraction($text);
+            $credentials = $this->createCredentials($passport);
+            $interaction = $this->createInteraction($text, $credentials);
+
             $this->runResponders($interaction);
             $this->chooseBestResponse($interaction);
 

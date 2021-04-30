@@ -13,6 +13,7 @@ class Interaction
     protected string $responseText;
     protected string $inputText;
     protected array $responders;
+    protected array $credentials;
     protected array $debug;    
 
     public function __construct($text = '')
@@ -21,6 +22,10 @@ class Interaction
         $this->responseText = '';
         $this->responders = [];
         $this->debug = [];
+    }
+
+    public function setCredentials(array $credentials) {
+        $this->credentials = $credentials;
     }
 
     /**
