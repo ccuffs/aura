@@ -2,22 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Sanctum\HasApiTokens;
 use betterapp\LaravelDbEncrypter\Traits\EncryptableDbAttribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class App extends Model
 {
-    use HasApiTokens;
     use HasFactory;
-    use HasProfilePhoto;
     use Notifiable;
-    use TwoFactorAuthenticatable;
-    use EncryptableDbAttribute;
+    use EncryptableDbAttribute;    
 
     /**
      * The attributes that are mass assignable.
@@ -25,17 +19,17 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'passport',
+        'secret',
         'name',
-        'email',
-        'password'
+        'description',
+        'domain'
     ];
 
     /**
      * The attributes that should be encrypted/decrypted to/from db.
      */
     protected $encryptable = [
-        'passport',
+        'secret',
     ];
 
     /**
@@ -44,10 +38,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
-        'remember_token',
-        'two_factor_recovery_codes',
-        'two_factor_secret',
+        'secret'
     ];
 
     /**
@@ -56,7 +47,6 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
     ];
 
     /**
@@ -65,14 +55,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $appends = [
-        'profile_photo_url',
     ];
 
     /**
      * Get the apps this user has.
      */
-    public function apps()
+    public function user()
     {
-        return $this->hasMany(App::class);
-    }
+        return $this->belongsTo(User::class);
+    }    
 }
