@@ -2,10 +2,9 @@
 
 namespace App\Aura;
 
+use App\Aura\Auth\CredentialManager;
 use App\Aura\Interactions\Interaction;
-use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Log;
-use Exception;
 
 /**
  * 
@@ -14,6 +13,7 @@ class Aura
 {
     protected array $config;
     protected array $responders;
+    protected CredentialManager $auth;
 
     protected function createResponderInstances($entries)
     {
@@ -50,6 +50,7 @@ class Aura
     public function __construct($config)
     {
         $this->config = $config;
+        $this->auth = new CredentialManager();
 
         $this->createResponderInstances($this->config['responders']);
         $this->initResponders();
@@ -110,87 +111,17 @@ class Aura
         $interaction->sortRespondersByScore();
     }
 
-    /**
-     * 
-     * @License: using code from https://github.com/firebase/php-jwt/blob/master/src/JWT.php
-     */
-    protected function parseJwt($jwt) {
-        $parts = explode('.', $jwt);
-
-        if (count($parts) != 3) {
-            throw new \Exception('Wrong number of segments in JWT');
-        }
-        
-        list($headb64, $bodyb64, $cryptob64) = $parts;
-
-        $header = json_decode(JWT::urlsafeB64Decode($headb64));
-        $payload = json_decode(JWT::urlsafeB64Decode($bodyb64));        
-        $sig = json_decode(JWT::urlsafeB64Decode($cryptob64));        
-
-        if ($header === null) {
-            throw new Exception('Invalid header encoding in JWT');
-        }
-
-        if ($payload === null) {
-            throw new Exception('Invalid claims encoding in JWT');
-        }
-
-        if ($sig === false) {
-            throw new Exception('Invalid signature encoding in JWT');
-        }        
-
-        return [
-            'header' => (array) $header,
-            'payload' => (array) $payload,
-            'sig' => $sig,
-        ];
-    }
-
-    protected function getJwtKeyFromAppId($app_id) {
-        // TODO: implementar a busca da informação
-        return 'example_keyj';
-    }
-
-    /**
-     * 
-     * @License: using code from https://github.com/firebase/php-jwt/blob/master/src/JWT.php
-     */
-    protected function checkPassport(string $jwt) {
-        $infos = $this->parseJwt($jwt);
-        $payload = $infos['payload'];
-
-        if (!isset($payload['app_id'])) {
-            throw new \Exception('Missing app_id in passport payload');
-        }
-
-        $key = $this->getJwtKeyFromAppId($payload['app_id']);
-        $decoded = JWT::decode($jwt, $key, array('HS256'));
-
-        return $decoded;
-    }
-
-    protected function createCredentials(string $passport) {
-        if(empty($passport)) {
-            // TODO: criar credenciais padrão
-            return [];
-        }
-
-        return [
-            'jwt' => $this->checkPassport($passport)
-        ];
-    }
-
     public function process(string $text, string $passport)
     {
         try {
-            $credentials = $this->createCredentials($passport);
+            $credentials = $this->auth->createCredentials($passport);
             $interaction = $this->createInteraction($text, $credentials);
 
             $this->runResponders($interaction);
             $this->chooseBestResponse($interaction);
 
             return $interaction;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // TODO: criar e retornar interaction com erro
             throw $e;
         }
