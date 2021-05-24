@@ -2,6 +2,7 @@
 
 namespace App\Aura\Interactions;
 
+use App\Aura\Auth\Credentials;
 use App\Aura\Responders\Responder;
 use Illuminate\Support\Str;
 
@@ -11,21 +12,34 @@ use Illuminate\Support\Str;
 class Interaction
 {
     protected string $responseText;
+    protected array $responseData;
     protected string $inputText;
     protected array $responders;
-    protected array $credentials;
+    protected Credentials $credentials;
     protected array $debug;    
 
     public function __construct($text = '')
     {
         $this->inputText = $text;
         $this->responseText = '';
+        $this->responseData = [];
         $this->responders = [];
         $this->debug = [];
+        $this->credentials = new Credentials([]);
     }
 
-    public function setCredentials(array $credentials) {
+    /**
+     * 
+     */
+    public function setCredentials(Credentials $credentials) {
         $this->credentials = $credentials;
+    }
+
+    /**
+     * 
+     */
+    public function credentials() {
+        return $this->credentials;
     }
 
     /**
@@ -43,11 +57,12 @@ class Interaction
      *
      * @return string
      */
-    public function addResponse($data, $score, Responder $responder)
+    public function addResponse(string $text, array $data, float $score, Responder $responder)
     {
         $this->responders[] = [
             'name' => $responder->name(),
-            'data' => $data,            
+            'text' => $text,            
+            'data' => $data,
             'score' => $score,
             'instance' => $responder
         ];
@@ -61,6 +76,7 @@ class Interaction
             ],
             'response' => [
                 'text' => $this->responseText,
+                'data' => $this->responseData,
                 'context' => Str::uuid()->toString()
             ],
             'responders' => $this->responders,
@@ -81,9 +97,16 @@ class Interaction
         $this->debug[$key] = $data;
     }
 
-    public function sortRespondersByScore() {
+    public function pickBestResponder() {
+        $this->sortRespondersByScore();
+        $responder = $this->responders[0];
+        $this->responseText = $responder['text'];
+        $this->responseData = $responder['data'];
+    }
+
+    protected function sortRespondersByScore() {
         usort($this->responders, function($responseA, $responseB) {
-            return strcmp($responseA['score'], $responseB['score']);
+            return strcmp($responseB['score'], $responseA['score']);
         });
     }
 }

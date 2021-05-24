@@ -96,11 +96,9 @@ class CredentialManager
     public function createCredentials(string $passport) {
         if(empty($passport)) {
             // TODO: criar credenciais padrão
-            return [];
+            return new Credentials();
         }
 
-        return [
-            'jwt' => $this->checkPassport($passport)
-        ];
+        return new Credentials($this->checkPassport($passport));
     }
 }

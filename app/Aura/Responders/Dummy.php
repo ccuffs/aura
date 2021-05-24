@@ -37,6 +37,6 @@ class Dummy extends Responder
      */
     public function engage(Interaction $interaction)
     {
-        $interaction->addResponse('Responder acting on: ' . $interaction, 0.3, $this);
+        $interaction->addResponse('Responder acting on: ' . $interaction, [], 0.3, $this);
     }
 }

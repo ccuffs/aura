@@ -3,6 +3,7 @@
 namespace App\Aura;
 
 use App\Aura\Auth\CredentialManager;
+use App\Aura\Auth\Credentials;
 use App\Aura\Interactions\Interaction;
 use Illuminate\Support\Facades\Log;
 
@@ -56,7 +57,7 @@ class Aura
         $this->initResponders();
     }
 
-    protected function createInteraction(string $text, array $credentials)
+    protected function createInteraction(string $text, Credentials $credentials)
     {
         $interaction = new Interaction($text);
         $interaction->setCredentials($credentials);
@@ -108,7 +109,7 @@ class Aura
 
     protected function chooseBestResponse(Interaction $interaction) {
         // Ordena o conjunto de responder do maior para o menor score de resposta.
-        $interaction->sortRespondersByScore();
+        $interaction->pickBestResponder();
     }
 
     public function process(string $text, string $passport)
@@ -125,5 +126,9 @@ class Aura
             // TODO: criar e retornar interaction com erro
             throw $e;
         }
+    }
+
+    public function auth() {
+        return $this->auth;
     }
 }
