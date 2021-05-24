@@ -2,12 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Aura\Support\Facades\Aura;
+use App\Models\App;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use \Firebase\JWT\JWT;
 
 class TestController extends Controller
 {
+    public function credentials(Request $request)
+    {
+        $app = App::first();
+
+        $passport = Aura::auth()->createPassportFromApp($app, [
+            'iduffs' => 'fernando.bevilacqua',
+            'email' => 'fernando.bevilacqua@uffs.edu.br',
+            'matricula' => '',
+        ]);
+
+        $credentials = Aura::auth()->createCredentials($passport);
+
+        return [
+            'credentials' => $credentials,
+            'passport' => $passport
+        ];
+    }
+
     /**
      *
      * @param  \Illuminate\Http\Request  $request

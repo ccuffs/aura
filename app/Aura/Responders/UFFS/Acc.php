@@ -2,6 +2,7 @@
 
 namespace App\Aura\Responders\UFFS;
 
+use Illuminate\Support\Facades\Http;
 use App\Aura\Interactions\Interaction;
 use App\Aura\Responders\Responder;
 
@@ -27,7 +28,7 @@ class Acc extends Responder
      */
     public function shouldEngage(Interaction $interaction)
     {
-        return true;
+        return stripos($interaction->inputText(), 'acc') !== false;
     }
 
     /**
@@ -38,6 +39,14 @@ class Acc extends Responder
      */
     public function engage(Interaction $interaction)
     {
-        $interaction->addResponse('Responder acting on: ' . $interaction, 0.3, $this);
+        $apiCCUrl = config('aura.apicc_url');
+        $matricula = ''; // TODO: obter de credentials->data()
+        $response = Http::acceptJson()->get($apiCCUrl . "/alunos/$matricula/historico/");
+
+        if(!$response->ok()) {
+            return;
+        }
+
+        $interaction->addResponse('Acc', $response->json(), 0.9, $this);
     }
 }

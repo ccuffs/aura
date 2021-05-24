@@ -24,9 +24,6 @@ URL::forceRootUrl(config('app.url'));
 Route::group(['middleware' => ['web', 'auth', 'verified']], function () {
     // Aura
     Route::get('/aura', [AuraController::class, 'show'])->name('aura.show');
-    
-    // Test
-    Route::get('/test/passport', [TestController::class, 'passport'])->name('test.passport');    
 });
 
 Route::get('/', function () {
@@ -36,3 +33,7 @@ Route::get('/', function () {
         return view('auth.login');
     }
 });
+
+// Test
+Route::get('/test/passport', [TestController::class, 'passport'])->name('test.passport');    
+Route::get('/test/credentials', [TestController::class, 'credentials'])->name('test.credentials');    
