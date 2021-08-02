@@ -4,98 +4,141 @@
     <img src="https://img.shields.io/github/workflow/status/ccuffs/template/ci.uffs.cc?label=Build&logo=github&logoColor=white&style=for-the-badge" title="Status do build">
 </p>
 
-# Título
+# Aura
 
-A assiste virtual do curso de Ciência da Computação - UFFS, tem por objetivo facilitar o acesso à informação por parte da comunidade acadêmica. Para isto ela utiliza técnicas de Inteligência Artifial que permitem que as informações corretas sejam fornecidas àqueles que as buscam. 
+A assiste virtual do curso de [Ciência da Computação][https://cc.uffs.edu.br] da [Universidade Federal da Fronteira Sul (UFFS)](https://www.uffs.edu.br), cujo objetivo é facilitar o acesso à informação por parte da comunidade acadêmica. Para isto ela utiliza técnicas de Inteligência Artifial que permitem que as informações corretas sejam fornecidas àqueles que as buscam. 
 
 A Aura pode ser muito mais rápida que uma pessoa, trabalha 24h por dia, sete dias por semana para solucionar seus problemas. 
 
 > **IMPORTANTE:** A Aura está em fase de desenvolvimento, portanto seus resultados de busca podem não ser satisfatórios - nada substitui um e-mail cuidadosamente escrito por uma pessoa :)
 
-## Começando
+## 🚀 Começando
 
-Para que possa _buildar_ o projeto, é necessário cloná-lo e acessar o diretório:
+### 1. Dependências
 
-```
-git clone https://github.com/ccuffs/aura.git
-cd aura
-```
+Para executar o projeto, você precisa ter o seguinte instalado:
 
-### Instalando dependências
-Para executar este projeto, as seguintes dependências devem ser instaladas:
-
+- [Git](https://git-scm.com);
 - [PHP](https://www.php.net/downloads);
 - [Composer](https://getcomposer.org/download/);
-- [MySQL](https://www.mysql.com/downloads/);
-- [Node e NPM](https://nodejs.org/en/);
+- [NodeJS](https://nodejs.org/en/);
+- [NPM](https://www.npmjs.com/package/npm);
 
-### Configuração do Banco de Dados
-O SGBD utilizado é o MySQL. Acesse-o e crie um banco de dados específico para a aplicação:
-
-```
-CREATE DATABASE <nome-do-banco>;
-```
-
-### Configuração do Laravel
-Crie um arquivo chamado `.env` utilizando `.env.example` como template:
+Você precisa de várias extensões PHP instaladas também:
 
 ```
-cp .env.example .env
+sudo apt install php-cli php-mbstring php-zip php-xml php-curl
 ```
 
-> Se você seguir os passos aqui descritos e a aplicação não rodar como esperado, deixe o campo `APP_URL` vazio no `.env`. 
+### 2. Configuração
 
-Em seguida, altere o valor do campo `DB_DATABASE` para `<nome-do-banco>` e substitua o valor dos campos `DB_USERNAME` e `DB_PASSWORD` para o usuário e senha do MySQL, utilizados na criação do banco.
+Feito a instalação das dependências, é necessário obter uma cópia do projeto. A forma recomendada é clonar o repositório para a sua máquina.
 
-Agora, instale as dependências do PHP:
+Para isso, rode:
+
+```
+git clone --recurse-submodules https://github.com/ccuffs/aura && cd aura
+```
+
+Isso criará e trocará para a pasta `aura` com o código do projeto.
+
+#### 2.1 PHP
+
+Instale as dependências do PHP usando o comando abaixo:
 
 ```
 composer install
 ```
 
-Após, uma chave da aplicação deve ser gerada:
+#### 2.2 Banco de Dados
+
+O banco de dados mais simples para uso é o SQLite. Para criar uma base usando esse SGBD, rode:
+
 ```
-php artisan key:generate
+touch database/database.sqlite
 ```
 
-Por fim, rode as migrações, para carregar as relações no banco:
-```
-php artisan migrate
-```
+#### 2.3 Node
 
-### Configuração do Node
-
-Para o front-end, basta instalar as dependências com o `npm`:
+Instale também as dependências do NodeJS executando:
 
 ```
 npm install
 ```
 
-### Rodando o Projeto
+#### 2.4 Laravel
 
-Inicie o servidor Laravel
+Crie o arquivo `.env` a partir do arquivo `.env.example` gerado automaticamente pelo Laravel:
 
 ```
-php artisan serve
+cp .env.example .env
 ```
 
-E compile o front-end:
+Crie as tabelas do banco de dados:
+
+```
+php artisan migrate
+```
+
+Por fim execute o comando abaixo para a geração da chave de autenticação da aplicação:
+
+```
+php artisan key:generate
+```
+
+Gere os recursos JavaScript e CSS:
 
 ```
 npm run dev
 ```
 
-## Contribua
+>*DICA:* enquanto estiver desenvolvendo, rode `npm run watch` para manter os scripts javascript sendo gerados sob demanda quando alterados.
+
+### 3. Utilizacão
+
+#### 3.1 Rodando o projeto
+
+Depois de seguir todos os passos de instalação, inicie o servidor do Laravel:
+
+```
+php artisan serve
+```
+
+Após isso a aplicação estará rodando na porta 8000 e poderá ser acessada em [localhost:8000](http://localhost:8000).
+
+
+#### 3.2 Utilização da API
+
+Se você utilizar a API dessa aplicacão, todos endpoints estarão acessivel em `/api`, por exemplo [localhost:8000/api](http://localhost:8000/api). Os endpoints que precisam de uma chave de autenticação devem ser utilizar o seguinte cabeçalho HTTP:
+
+```
+Authorization: Bearer XXX
+```
+
+onde `XXX` é o valor da sua chave de acesso (api token do Jetstream), por exemplo `c08cbbfd6eefc83ac6d23c4c791277e4`.
+Abaixo está um exemplo de requisição para o endpoint `user` utilizando a chave de acesso acima:
+
+```bash
+curl -H 'Accept: application/json' -H "Authorization: Bearer c08cbbfd6eefc83ac6d23c4c791277e4" http://localhost:8080/api/user
+```
+
+## 🤝 Contribua
 
 Sua ajuda é muito bem-vinda, independente da forma! Confira o arquivo [CONTRIBUTING.md](CONTRIBUTING.md) para conhecer todas as formas de contribuir com o projeto. Por exemplo, [sugerir uma nova funcionalidade](https://github.com/ccuffs/aura/issues/new?assignees=&labels=&template=feature_request.md&title=), [reportar um problema/bug](https://github.com/ccuffs/aura/issues/new?assignees=&labels=bug&template=bug_report.md&title=), [enviar um pull request](https://github.com/ccuffs/hacktoberfest/blob/master/docs/tutorial-pull-request.md), ou simplemente utilizar o projeto e comentar sua experiência.
 
 Veja o arquivo [ROADMAP.md](ROADMAP.md) para ter uma ideia de como o projeto deve evoluir.
 
 
-## Licença
+## 🎫 Licença
 
 Esse projeto é licenciado nos termos da licença open-source [Apache 2.0](https://choosealicense.com/licenses/apache-2.0/) e está disponível de graça.
 
-## Changelog
+## 🧬 Changelog
 
 Veja todas as alterações desse projeto no arquivo [CHANGELOG.md](CHANGELOG.md).
+
+## 🧪 Projetos semelhates
+
+Abaixo está uma lista de links interessantes e projetos similares:
+
+* [Home Assistant](https://github.com/home-assistant/core)
