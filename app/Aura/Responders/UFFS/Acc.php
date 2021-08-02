@@ -40,7 +40,7 @@ class Acc extends Responder
     public function engage(Interaction $interaction)
     {
         $apiCCUrl = config('aura.apicc_url');
-        $matricula = ''; // TODO: obter de credentials->data()
+        $matricula = $interaction->credentials()->data('matricula');
         $response = Http::acceptJson()->get($apiCCUrl . "/alunos/$matricula/historico/");
 
         if(!$response->ok()) {

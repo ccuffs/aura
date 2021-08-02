@@ -25,7 +25,7 @@ class Interaction
         $this->responseData = [];
         $this->responders = [];
         $this->debug = [];
-        $this->credentials = new Credentials([]);
+        $this->credentials = new Credentials(['user' => 'guest']);
     }
 
     /**

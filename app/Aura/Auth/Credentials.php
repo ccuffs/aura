@@ -8,6 +8,7 @@ namespace App\Aura\Auth;
 class Credentials
 {
     protected array $data;
+    protected array $jwt;
 
     public function __construct($decodedJwt = [])
     {
@@ -15,7 +16,12 @@ class Credentials
             throw new \Exception('Constructor must receive an array');
         }
 
-        $this->data = isset($decodedJwt['user']) ? $decodedJwt['user'] : [];
+        if(!isset($decodedJwt['user'])) {
+            throw new \Exception('JWT password has no field "user"');
+        }
+
+        $this->jwt = $decodedJwt;
+        $this->data = (array)$decodedJwt['user'];
     }
 
     public function data($field)

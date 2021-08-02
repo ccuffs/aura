@@ -96,9 +96,9 @@ class CredentialManager
     public function createCredentials(string $passport) {
         if(empty($passport)) {
             // TODO: criar credenciais padrão
-            return new Credentials();
+            return new Credentials(['user' => 'guest']);
         }
 
-        return new Credentials($this->checkPassport($passport));
+        return new Credentials((array)$this->checkPassport($passport));
     }
 }
